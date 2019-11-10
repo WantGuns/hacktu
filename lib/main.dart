@@ -44,13 +44,12 @@ class _CheckEventsState extends State<CheckEvents> {
       setState(() => _message = message["notification"]["title"]);
       //mess = message as String;
     });
-  }
+  } */
 
-  // FIREBASE ENDS HERE  */
+  // FIREBASE ENDS HERE  
 
 
-
-  var eventTitle;
+  var event;
   var id;
   var eventTitleList = new List(3);
 
@@ -60,7 +59,7 @@ class _CheckEventsState extends State<CheckEvents> {
 
 
     //Map<String, dynamic> events = jsonDecode(response.body);
-    eventTitle = jsonDecode(response.body);//['event_name'];
+    event = jsonDecode(response.body);//['event_name'];
     //print(eventTitle[0]['event_name']);
     //print(events['title']);
     //setState(() => _title = events['title']);
@@ -73,7 +72,7 @@ class _CheckEventsState extends State<CheckEvents> {
 
   
 _launchURL() async {
-  const url = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+  const url = '';
   if (await canLaunch(url)) {
     await launch(url);
   } else {
@@ -102,29 +101,46 @@ _launchURL() async {
       home: Scaffold(
         appBar: AppBar(
           title: Text("EVENTS"),
-
           centerTitle: true,
         ),
         body: ListView.builder(
           itemCount:  5,
           itemBuilder: (context, index) {
-            return Card(
+            return Card (
               child: ListTile(
-              leading: Image.network('https://images.unsplash.com/photo-1558980664-3a031cf67ea8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80'),
+              //onTap: _launchURL(),
+              leading: Icon(Icons.bookmark),
               //title: Text('${items[index]}'),
-              title: Text(eventTitle[index]['event_name']),
-              //subtitle: Text('$id'),
-              trailing: IconButton(
+              title: Text(event[index]['event_name']),
+              subtitle: Column (
+                children: <Widget>[
+                  Expanded (
+                    child: Text(event[index]['event_time']),
+                    ),
+                  Expanded (
+                    child: Text(event[index]['event_date']),
+                  ),
+                  Expanded (
+                    child: Text(event[index]['event_des']),
+                  )
+                ],
+              ),
+              trailing: FlatButton(
                 onPressed: () {
-                  _launchURL();
+                  get('http://171.61.222.17:8082/post/${event[index]['id']}/rsvp/');
                 },
-                icon: Icon(Icons.more_vert),
+                child: Text("RSVP")
                 )
               ),
             );
           },
         ),
       ),
+      theme: ThemeData (
+        accentColor: Colors.indigoAccent,
+        primarySwatch: Colors.orange
+      ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
