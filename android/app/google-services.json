@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "651560017430",
+    "firebase_url": "https://hacktu19.firebaseio.com",
+    "project_id": "hacktu19",
+    "storage_bucket": "hacktu19.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:651560017430:android:c1416432eddf2304831f37",
+        "android_client_info": {
+          "package_name": "com.example.hacktu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "651560017430-1l7t5g56aq72gg4o22q1115cik0jmdl2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDziiRCBPRUuHjKC6qKgHBU7I0RGNL77C4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "651560017430-1l7t5g56aq72gg4o22q1115cik0jmdl2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

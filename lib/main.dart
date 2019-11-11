@@ -1,12 +1,10 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
-import 'dart:async';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
+var event;
 
 void main() => runApp( MaterialApp(
     home: CheckEvents(),
@@ -19,7 +17,7 @@ class CheckEvents extends StatefulWidget {
 
 class _CheckEventsState extends State<CheckEvents> {
 
-  /*
+  @override
   // FIREBASE WORK STARTS HERE
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
@@ -28,79 +26,61 @@ class _CheckEventsState extends State<CheckEvents> {
     _firebaseMessaging.getToken().then((token) => print(token));
   }
 
- // var mess = "";
-  //var gunwant = "moron";
   void getMessage(){
    _firebaseMessaging.configure(
         onMessage: (Map<String, dynamic> message) async {
-      //print('on message $message');
-      //setState(() => _message = '$gunwant');
       setState(() => _message = message["notification"]["body"]);
     }, onResume: (Map<String, dynamic> message) async {
-      //print('on resume $message');
       setState(() => _message = message["notification"]["title"]);
     }, onLaunch: (Map<String, dynamic> message) async {
-      //print('on launch $gunwant');
       setState(() => _message = message["notification"]["title"]);
-      //mess = message as String;
     });
-  } */
+  } 
 
   // FIREBASE ENDS HERE  
 
-
-  var event;
-  var id;
-  var eventTitleList = new List(3);
-
   void getEvents() async {
-    //Response res = await get('http://172.16.93.238:8000/json');
-    Response response = await get('http://171.61.222.17:8082/media/test.json');
-
-
-    //Map<String, dynamic> events = jsonDecode(response.body);
-    event = jsonDecode(response.body);//['event_name'];
-    //print(eventTitle[0]['event_name']);
-    //print(events['title']);
-    //setState(() => _title = events['title']);
-    //eventTitle = events['title'];
-    //setState(() => _id = events['id']);
-    //id = events['id'];
-    //return _id;
-    
+    Response response = await get('https://jsonplaceholder.typicode.com/todos/1');
+    event = jsonDecode(response.body);
+    print(event['id']);
   }
 
   
 _launchURL() async {
-  const url = '';
+  const url = 'https://i.redd.it/x3dqd57hdyx31.jpg';
   if (await canLaunch(url)) {
     await launch(url);
   } else {
     throw 'Could not launch $url';
   }
 }
-  //Widget build(BuildContext context) => ListEvents();
-    //final List<String> items;
-  //ListEvents({Key key, @required this.items}) : super(key: key);
-
-  //final items = List<String>.generate(10000, (i) => "Item $i");
 
   @override
   void initState() {
     super.initState();
     getEvents();
-    //getMessage();
+    getMessage();
   }
 
+
   @override
+  Widget build(BuildContext context) => Home(); 
+}
+
+class Home extends StatelessWidget {
+  @override
+
   Widget build(BuildContext context) {
     final title = 'Long List';
+    print(event['title']);
    // print(eventTitle);
     return MaterialApp(
       title: title,
       home: Scaffold(
         appBar: AppBar(
-          title: Text("EVENTS"),
+          title: Text(
+            "EVENTS",
+            ),
           centerTitle: true,
         ),
         body: ListView.builder(
@@ -111,23 +91,20 @@ _launchURL() async {
               //onTap: _launchURL(),
               leading: Icon(Icons.bookmark),
               //title: Text('${items[index]}'),
-              title: Text(event[index]['event_name']),
+              title: Text(event['title']),
               subtitle: Column (
                 children: <Widget>[
-                  Expanded (
-                    child: Text(event[index]['event_time']),
-                    ),
-                  Expanded (
-                    child: Text(event[index]['event_date']),
-                  ),
-                  Expanded (
-                    child: Text(event[index]['event_des']),
-                  )
+                    Text(event['title']),
+                    Text(event['title']),
+                    Text(event['title']),
+                    /*Text(event[index]['event_time']),
+                    Text(event[index]['event_date']),
+                    Text(event[index]['event_des']), */
                 ],
               ),
               trailing: FlatButton(
-                onPressed: () {
-                  get('http://171.61.222.17:8082/post/${event[index]['id']}/rsvp/');
+                onPressed: () async {
+                  Response responsRSVP = await get('http://171.61.222.17:8082/post/${event[index]['id']}/rsvp/');
                 },
                 child: Text("RSVP")
                 )
@@ -140,8 +117,7 @@ _launchURL() async {
         accentColor: Colors.indigoAccent,
         primarySwatch: Colors.orange
       ),
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: true,
     );
   }
 }
-
